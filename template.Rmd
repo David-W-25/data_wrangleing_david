@@ -8,3 +8,42 @@ library(tidyverse)
 ```
 
 This document will show how to import data.
+
+## Import the FAS Litters CSV
+```{r}
+litters_df = read_csv("data/FAS_litters.csv")
+
+litters_df = janitor::clean_names(litters_df)
+```
+
+```{r}
+view(litters_df)
+head(litters_df)
+```
+
+```{r}
+litters_df = 
+    read_csv(file = "./data/FAS_litters.csv",
+    skip = 10, col_names = FALSE)
+litters_df
+```
+
+```{r}
+litters_df = 
+    read_csv(
+        file = "./data/FAS_litters.csv",
+        na = c(".", "NA", ""))
+litters_df
+litters_df = janitor::clean_names(litters_df)
+
+pull(litters_df, gd0_weight)
+```
+
+
+Import the FAS pups CSV
+```{r}
+pups_df = read_csv(file = "./data/FAS_pups.csv")
+
+```
+
+
