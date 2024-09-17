@@ -120,6 +120,17 @@ pull(litters_df, gd0_weight)
     ## [31] 23.8 22.6 23.8 25.5 23.9 24.5   NA   NA 26.9 27.5 28.5 33.4 21.8 25.4 20.0
     ## [46] 21.8 25.6 23.5 25.5
 
+``` r
+litters_df = 
+    read_csv(
+        file = "./data/FAS_litters.csv",
+        na = c(".", "NA", ""),
+        col_types = cols(
+          Group = col_factor()
+        )
+    )
+```
+
 Import the FAS pups CSV
 
 ``` r
@@ -134,3 +145,23 @@ pups_df = read_csv(file = "./data/FAS_pups.csv")
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+Import MLB 2011 summary data
+
+``` r
+mlb_df = read_excel("data/mlb11.xlsx", sheet = "mlb11", range = "C1:E7")
+```
+
+``` r
+pulse_df = read_sas("./data/public_pulse_data.sas7bdat")
+head(pulse_df, 5)
+```
+
+    ## # A tibble: 5 × 7
+    ##      ID   age Sex   BDIScore_BL BDIScore_01m BDIScore_06m BDIScore_12m
+    ##   <dbl> <dbl> <chr>       <dbl>        <dbl>        <dbl>        <dbl>
+    ## 1 10003  48.0 male            7            1            2            0
+    ## 2 10015  72.5 male            6           NA           NA           NA
+    ## 3 10022  58.5 male           14            3            8           NA
+    ## 4 10026  72.7 male           20            6           18           16
+    ## 5 10035  60.4 male            4            0            1            2
