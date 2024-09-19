@@ -1,0 +1,90 @@
+---
+title: "data_manipulation"
+author: "David"
+date: "2024-09-19"
+output: html_document
+---
+
+```{r setup, echo = FALSE, message = FALSE}
+library(tidyverse)
+```
+
+This document will show how to manipulate data.
+
+```{r}
+litters_df =
+  read_csv("./data/FAS_litters.csv", na = c("NA", "", "."))
+
+litters_df = janitor::clean_names(litters_df)
+
+pups_df =
+  read_csv("./data/FAS_pups.csv", na = c("NA", "", "."))
+
+pups_df = janitor::clean_names(pups_df)  
+
+```
+
+Select: use select()
+```{r}
+select(litters_df, group, litter_number, gd0_weight)
+select(litters_df, group:gd18_weight)
+select(litters_df, -pups_survive)
+select(litters_df, -(group:gd18_weight))
+select(litters_df, starts_with("gd"))
+select(litters_df, contains("pups"))
+select(litters_df, GROUP = group)
+
+```
+
+Filter
+```{r}
+filter(litters_df, pups_born_alive > 8)
+filter(litters_df, pups_born_alive != 9)
+filter(litters_df, group = "Low8")
+filter(litters_df, group %in% c("Low7", "Low8"))
+filter(litters_df, group %in% c("Low7", "Low8") | pups_born_alive == 8)
+filter(pups_df, pd_pivot != 7)
+```
+
+Mutate
+```{r}
+mutate(litters_df,
+  wt_gain = gd18_weight - gd0_weight,
+  group = str_to_lower(group)
+)
+
+mutate(pups_df,
+       total_pd = pd_ears + pd_eyes + pd_pivot + pd_walk)
+```
+
+Arrange
+```{r}
+head(arrange(litters_df, group, pups_born_alive), 10)
+arrange(litters_df, desc(gd0_weight))
+```
+
+```{r}
+litters_df = 
+  read_csv("./data/FAS_litters.csv", na = c("NA", ".", "")) |> 
+  janitor::clean_names() |> 
+  select(-pups_survive) |> 
+  mutate(
+    wt_gain = gd18_weight - gd0_weight,
+    group = str_to_lower(group)) |> 
+  drop_na(wt_gain)
+```
+
+```{r}
+pups_df =
+  read_csv("./data/FAS_pups.csv", na = c("NA", ".", "")) |>
+  janitor::clean_names() |>
+  filter(sex == 1) |>
+  select(-pd_ears) |>
+  mutate(pivot_log = pd_pivot >= 7)
+
+pups_df
+```
+
+
+
+
